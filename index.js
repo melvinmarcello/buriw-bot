@@ -1,5 +1,5 @@
 const Bot = require("node-telegram-bot-api")
-const CurrencyFormat = require('./NumberFormat')
+import { CurrencyFormat } from './NumberFormat';
 require('dotenv').config()
 
 const options = {
