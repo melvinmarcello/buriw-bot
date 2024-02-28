@@ -1,6 +1,16 @@
 const Bot = require("node-telegram-bot-api")
-import { CurrencyFormat } from './NumberFormat';
+
 require('dotenv').config()
+
+const CurrencyFormat = (value) =>{
+    const formated = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(value)
+  
+    return formated
+}
+
 
 const options = {
     polling: true
