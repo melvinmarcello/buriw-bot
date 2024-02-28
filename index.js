@@ -1,4 +1,5 @@
 const Bot = require("node-telegram-bot-api")
+const CurrencyFormat = require('./NumberFormat')
 require('dotenv').config()
 
 const options = {
@@ -50,19 +51,18 @@ buriwBot.onText(query.price, async (res) =>{
         let targetCoin = coins[1].toLowerCase();
         let data = await fetch(`${process.env.cg_base_url}/coins/${targetCoin}?localization=false&tickers=true`)
         let response = await data.json()            
-        
-        if(response.length){
+                
+        if(response.error){
+            buriwBot.sendMessage(res.from.id, "Sorry There is No Coin Data With That Name!")
+        }else{
             const symbol = response.symbol.toUpperCase()
+            
             let message = `
-                ${symbol}\n$${response.market_data.current_price.usd}\nMarket Cap => 
-            `
-            
-            
+                ${symbol}\n$${response.market_data.current_price.usd}\nMarket Cap => ${CurrencyFormat(response.market_data.market_cap.usd)}
+            `        
             buriwBot.sendPhoto(res.from.id, response.image.large, {
                 caption: message
             })
-        }else{
-            buriwBot.sendMessage(res.from.id, "Sorry There is No Coin Data With That Name!")
         }
     }
     
